@@ -26,9 +26,10 @@ async function fetchWebsiteText(url) {
     const parsed = new URL(url);
     if (!['http:', 'https:'].includes(parsed.protocol)) return null;
 
-    // Fetch with a 8-second timeout so a slow site never hangs the playbook
+    // Fetch with a 20-second timeout — WordPress sites can be slow to respond,
+    // and a skipped fetch means a less specific playbook
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 8000);
+    const timeout = setTimeout(() => controller.abort(), 20000);
 
     const response = await fetch(url, {
       signal: controller.signal,
